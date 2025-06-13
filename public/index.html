@@ -392,11 +392,11 @@
         if (!next) return;
 
         const diffDays = Math.floor((next.date - now) / 86400000);
-        const label = `<span class="label">Next solstice ☀️:</span> ${
+        const label = `<span class="label">Next solstice ☀️:</span> <span class="code">${
           next.name
         } — ${next.date.toDateString()} (${diffDays} day${
           diffDays !== 1 ? "s" : ""
-        } left)`;
+        } left)</span>`;
 
         document.getElementById("solsticeInfo").innerHTML = label;
       }
