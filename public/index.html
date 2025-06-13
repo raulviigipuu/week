@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Week and Year Info</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin-top: 50px;
+        padding: 0 10px;
+      }
+
+      .year,
+      .date {
+        font-weight: bold;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.15);
+      }
+
+      .year {
+        font-size: 48px;
+        color: #333;
+        margin-bottom: 10px;
+        text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      .date {
+        font-size: 22px;
+        margin-bottom: 20px;
+      }
+
+      .container-wrapper {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+
+      .container {
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        width: 220px;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+
+      .label {
+        font-size: 20px;
+        font-weight: bold;
+        white-space: nowrap;
+      }
+
+      .value {
+        font-size: 24px;
+        color: #007bff;
+      }
+
+      .subtext {
+        font-size: 16px;
+        color: #bbb;
+        margin-left: 5px;
+      }
+
+      .time-cell {
+        font-family: monospace;
+        font-weight: 500;
+        text-align: left;
+      }
+
+      .progress-bar-wrapper {
+        width: 100%;
+        height: 10px;
+        background-color: #eee;
+        border-radius: 5px;
+        margin-top: 10px;
+        overflow: hidden;
+      }
+
+      .progress-bar {
+        height: 100%;
+        background-color: #007bff;
+        width: 0%;
+        transition: width 0.5s ease;
+      }
+
+      .timestamp-style {
+        font-size: 14px;
+        font-family: system-ui, sans-serif;
+        color: #555;
+        opacity: 0.85;
+        text-align: center;
+        margin-top: 8px;
+        line-height: 1.4;
+      }
+
+      .timestamp-style .label {
+        font-weight: 500;
+        font-size: 14px;
+      }
+
+      .timestamp-style .code {
+        font-family: monospace;
+      }
+
+      #newYearCountdownSection {
+        margin-top: 20px;
+      }
+
+      @media (max-width: 600px) {
+        .container-wrapper {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .container {
+          width: 100%;
+          max-width: 300px;
+          white-space: normal;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <div class="year" id="currentYear">Loading...</div>
+      <div class="date" id="currentDate">Loading...</div>
+    </header>
+
+    <main>
+      <div class="container-wrapper">
+        <div class="container">
+          <div class="label">Current Week Number:</div>
+          <div class="value">
+            <div id="weekNumber">Loading...</div>
+            <div class="timestamp-style">
+              <span class="label">ISO week:</span>
+              <span class="code" id="isoWeek">Loading...</span>
+            </div>
+          </div>
+        </div>
+        <div class="container">
+          <div class="label">Day Number in Year:</div>
+          <div class="value">
+            <div id="dayOfYear">Loading...</div>
+            <div class="timestamp-style">
+              <span class="label">of</span>
+              <span class="code" id="totalDays">2025</span>
+            </div>
+          </div>
+        </div>
+        <div class="container">
+          <div class="label">Year Progress:</div>
+          <div class="value" id="yearProgress">Loading...</div>
+          <div class="progress-bar-wrapper">
+            <div class="progress-bar" id="progressFill"></div>
+          </div>
+        </div>
+        <div class="container">
+          <div class="label">Quarter:</div>
+          <div class="value">
+            <div id="quarterMain">Q2</div>
+            <div class="timestamp-style">
+              <span class="label">of</span>
+              <span class="code" id="quarterYear">2025</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <section id="newYearCountdownSection" class="timestamp-style">
+        <span class="label">Countdown to New Year 🎉:</span>
+        <span class="code" id="newYearCountdown">Loading...</span>
+      </section>
+
+      <section id="solsticeInfo" class="timestamp-style"></section>
+
+      <section id="moonPhaseSection" class="timestamp-style">
+        <span class="label">Moon phase:</span>
+        <span class="code" id="moonPhaseText">Loading...</span>
+      </section>
+
+      <section
+        id="loadTimeCard"
+        style="margin-top: 40px; font-size: 14px; color: #555; opacity: 0.85"
+      >
+        <table
+          style="margin: 0 auto; font-family: monospace; border-spacing: 0 6px"
+        >
+          <tr>
+            <td
+              style="font-weight: bold; text-align: right; padding-right: 8px"
+            >
+              GMT:
+            </td>
+            <td class="time-cell">
+              <time id="gmtTime" datetime="">Loading...</time>
+            </td>
+          </tr>
+          <tr>
+            <td
+              style="font-weight: bold; text-align: right; padding-right: 8px"
+            >
+              UTC:
+            </td>
+            <td class="time-cell">
+              <time id="utcTime" datetime="">Loading...</time>
+            </td>
+          </tr>
+          <tr>
+            <td
+              style="font-weight: bold; text-align: right; padding-right: 8px"
+            >
+              Unix:
+            </td>
+            <td
+              id="unixTime"
+              style="text-align: left; font-family: monospace"
+            ></td>
+          </tr>
+        </table>
+      </section>
+    </main>
+
+    <script>
+      // UTILS
+      function getWeekNumber(date) {
+        const firstDay = new Date(date.getFullYear(), 0, 1);
+        const pastDays = (date - firstDay + 86400000) / 86400000;
+        return Math.ceil((pastDays + firstDay.getDay() + 1) / 7);
+      }
+
+      function getISOWeekString(date) {
+        const temp = new Date(
+          Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())
+        );
+        const dayNum = temp.getUTCDay() || 7;
+        temp.setUTCDate(temp.getUTCDate() + 4 - dayNum);
+        const yearStart = new Date(Date.UTC(temp.getUTCFullYear(), 0, 1));
+        const weekNo = Math.ceil(((temp - yearStart) / 86400000 + 1) / 7);
+        return `${temp.getUTCFullYear()}-W${String(weekNo).padStart(2, "0")}`;
+      }
+
+      function getDayOfYear(date) {
+        const start = new Date(date.getFullYear(), 0, 0);
+        return Math.floor((date - start) / 86400000);
+      }
+
+      function isLeapYear(year) {
+        return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
+      }
+
+      function formatDate(date) {
+        return date.toLocaleDateString(undefined, {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        });
+      }
+
+      function formatDateTime(date, useUTC = false) {
+        const get = (fn) => String(fn.call(date)).padStart(2, "0");
+        const yyyy = useUTC ? date.getUTCFullYear() : date.getFullYear();
+        const mm = get(useUTC ? date.getUTCMonth : date.getMonth) + 1;
+        const dd = get(useUTC ? date.getUTCDate : date.getDate);
+        const hh = get(useUTC ? date.getUTCHours : date.getHours);
+        const min = get(useUTC ? date.getUTCMinutes : date.getMinutes);
+        const ss = get(useUTC ? date.getUTCSeconds : date.getSeconds);
+        return `${yyyy}.${mm}.${dd} ${hh}:${min}:${ss}`;
+      }
+
+      function getGMTOffsetString(date) {
+        const offset = -date.getTimezoneOffset();
+        const sign = offset >= 0 ? "+" : "-";
+        const hours = String(Math.floor(Math.abs(offset) / 60)).padStart(
+          2,
+          "0"
+        );
+        const minutes = String(Math.abs(offset) % 60).padStart(2, "0");
+        return `${sign}${hours}:${minutes}`;
+      }
+
+      function getQuarterInfo(date) {
+        const quarter = Math.floor(date.getMonth() / 3) + 1;
+        return `Q${quarter}`;
+      }
+
+      function getNewYearCountdownString() {
+        const now = new Date();
+        const nextYear = now.getFullYear() + 1;
+        const newYear = new Date(`${nextYear}-01-01T00:00:00Z`);
+        const diffMs = newYear - now;
+        if (diffMs <= 0) return "Happy New Year!";
+
+        const totalSec = Math.floor(diffMs / 1000);
+        const days = Math.floor(totalSec / (3600 * 24));
+        const hours = Math.floor((totalSec % (3600 * 24)) / 3600);
+        const minutes = Math.floor((totalSec % 3600) / 60);
+        const seconds = totalSec % 60;
+
+        return `${days}d ${hours}h ${minutes}m ${seconds}s until ${nextYear}`;
+      }
+
+      function getMoonPhase(date) {
+        const lunarCycle = 29.530588853;
+        const knownNewMoon = new Date(Date.UTC(2000, 0, 6, 18, 14));
+        const diff = date - knownNewMoon;
+        const days = diff / 86400000;
+        const phase = ((days % lunarCycle) + lunarCycle) % lunarCycle;
+        const percent = Math.round((phase / lunarCycle) * 100);
+
+        let name = "",
+          emoji = "",
+          est = "";
+
+        if (phase < 1) {
+          name = "New Moon";
+          emoji = "🌑";
+        } else if (phase < 7.4) {
+          name = "Waxing Crescent";
+          emoji = "🌒";
+        } else if (phase < 8.4) {
+          name = "First Quarter";
+          emoji = "🌓";
+        } else if (phase < 14.8) {
+          name = "Waxing Gibbous";
+          emoji = "🌔";
+        } else if (phase < 15.8) {
+          name = "Full Moon";
+          emoji = "🌕";
+        } else if (phase < 22.1) {
+          name = "Waning Gibbous";
+          emoji = "🌖";
+        } else if (phase < 23.1) {
+          name = "Last Quarter";
+          emoji = "🌗";
+        } else {
+          name = "Waning Crescent";
+          emoji = "🌘";
+        }
+
+        return `${emoji} ${name} (${percent}%)`;
+      }
+
+      function startCountdown() {
+        const el = document.getElementById("newYearCountdown");
+        function tick() {
+          el.textContent = getNewYearCountdownString();
+        }
+        tick(); // initial render
+        setInterval(tick, 1000); // live update every second
+      }
+
+      function getNextSolstice(today) {
+        const solstices = [
+          { date: "2024-06-20", name: "Summer Solstice" },
+          { date: "2024-12-21", name: "Winter Solstice" },
+          { date: "2025-06-20", name: "Summer Solstice" },
+          { date: "2025-12-21", name: "Winter Solstice" },
+          { date: "2026-06-21", name: "Summer Solstice" },
+          { date: "2026-12-21", name: "Winter Solstice" },
+          { date: "2027-06-21", name: "Summer Solstice" },
+          { date: "2027-12-21", name: "Winter Solstice" },
+          { date: "2028-06-20", name: "Summer Solstice" },
+          { date: "2028-12-21", name: "Winter Solstice" },
+          { date: "2029-06-21", name: "Summer Solstice" },
+          { date: "2029-12-21", name: "Winter Solstice" },
+          { date: "2030-06-21", name: "Summer Solstice" },
+          { date: "2030-12-21", name: "Winter Solstice" },
+        ];
+
+        for (const s of solstices) {
+          const solsticeDate = new Date(s.date + "T00:00:00Z");
+          if (solsticeDate > today) {
+            return {
+              name: s.name,
+              date: solsticeDate,
+            };
+          }
+        }
+
+        return null;
+      }
+
+      function updateSolsticeInfo() {
+        const now = new Date();
+        const next = getNextSolstice(now);
+        if (!next) return;
+
+        const diffDays = Math.floor((next.date - now) / 86400000);
+        const label = `<span class="label">Next solstice ☀️:</span> ${
+          next.name
+        } — ${next.date.toDateString()} (${diffDays} day${
+          diffDays !== 1 ? "s" : ""
+        } left)`;
+
+        document.getElementById("solsticeInfo").innerHTML = label;
+      }
+
+      // MAIN UPDATE
+      function updateUI() {
+        const now = new Date();
+        const year = now.getFullYear();
+        const totalDays = isLeapYear(year) ? 366 : 365;
+
+        document.getElementById("currentYear").textContent = year;
+        document.getElementById("currentDate").textContent = formatDate(now);
+        document.getElementById("weekNumber").textContent = getWeekNumber(now);
+        document.getElementById("isoWeek").textContent = getISOWeekString(now);
+
+        document.getElementById("dayOfYear").textContent = getDayOfYear(now);
+        document.getElementById("totalDays").textContent = totalDays;
+
+        document.getElementById("gmtTime").textContent =
+          formatDateTime(now, false) + ` (GMT${getGMTOffsetString(now)})`;
+        document
+          .getElementById("gmtTime")
+          .setAttribute("datetime", now.toISOString());
+
+        document.getElementById("utcTime").textContent =
+          formatDateTime(now, true) + ` (UTC)`;
+        document
+          .getElementById("utcTime")
+          .setAttribute("datetime", now.toISOString());
+        document.getElementById("unixTime").textContent = Math.floor(
+          Date.now() / 1000
+        );
+
+        const currentDay = getDayOfYear(now);
+        const progressPercent = ((currentDay / totalDays) * 100).toFixed(1);
+        document.getElementById(
+          "yearProgress"
+        ).textContent = `${progressPercent}%`;
+        document.getElementById(
+          "progressFill"
+        ).style.width = `${progressPercent}%`;
+
+        document.getElementById("quarterMain").textContent =
+          getQuarterInfo(now);
+        document.getElementById("quarterYear").textContent = now.getFullYear();
+
+        document.getElementById("moonPhaseText").textContent =
+          getMoonPhase(now);
+      }
+
+      updateUI();
+      startCountdown();
+      updateSolsticeInfo();
+    </script>
+  </body>
+</html>
