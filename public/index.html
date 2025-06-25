@@ -2,29 +2,29 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description"
-    content="Today's Date Snapshot — week number, quarter, day of year, year progress, moon phase, solstice countdown, and more." />
+    content="Today's Date Snapshot — week number, quarter, day of year, year progress, moon phase, solstice countdown, and more.">
 
   <!-- OpenGraph tags-->
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="Date Dashboard" />
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Date Dashboard">
   <meta property="og:description"
-    content="Today's Date Snapshot — week number, quarter, day of year, year progress, moon phase, solstice countdown, and more." />
-  <meta property="og:url" content="https://raul.viigipuu.ee/apps/week/" />
-  <meta property="og:image" content="https://raul.viigipuu.ee/apps/week/images/image.jpg" />
-  <meta property="og:locale" content="en_US" />
+    content="Today's Date Snapshot — week number, quarter, day of year, year progress, moon phase, solstice countdown, and more.">
+  <meta property="og:url" content="https://raul.viigipuu.ee/apps/week/">
+  <meta property="og:image" content="https://raul.viigipuu.ee/apps/week/images/image.jpg">
+  <meta property="og:locale" content="en_US">
 
   <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Date Dashboard" />
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Date Dashboard">
   <meta name="twitter:description"
-    content="Today's Date Snapshot — week number, quarter, day of year, year progress, moon phase, solstice countdown, and more." />
-  <meta name="twitter:image" content="https://raul.viigipuu.ee/apps/week/images/image.jpg" />
-  <meta name="twitter:url" content="https://raul.viigipuu.ee/apps/week/" />
+    content="Today's Date Snapshot — week number, quarter, day of year, year progress, moon phase, solstice countdown, and more.">
+  <meta name="twitter:image" content="https://raul.viigipuu.ee/apps/week/images/image.jpg">
+  <meta name="twitter:url" content="https://raul.viigipuu.ee/apps/week/">
 
-  <link rel="canonical" href="https://raul.viigipuu.ee/apps/week/" />
+  <link rel="canonical" href="https://raul.viigipuu.ee/apps/week/">
 
   <script type="application/ld+json">
   {
@@ -221,26 +221,26 @@
       </div>
     </div>
 
-    <section id="newYearCountdownSection" class="timestamp-style">
+    <div id="newYearCountdownSection" class="timestamp-style">
       <span class="label">Countdown to New Year 🎉:</span>
       <span class="code" id="newYearCountdown">Loading...</span>
-    </section>
+    </div>
 
-    <section id="solsticeInfo" class="timestamp-style"></section>
+    <div id="solsticeInfo" class="timestamp-style"></div>
 
-    <section id="moonPhaseSection" class="timestamp-style">
+    <div id="moonPhaseSection" class="timestamp-style">
       <span class="label">Moon phase:</span>
       <span class="code" id="moonPhaseText">Loading...</span>
-    </section>
+    </div>
 
-    <section id="loadTimeCard" style="margin-top: 40px; font-size: 14px; color: #555; opacity: 0.85">
+    <div id="loadTimeCard" style="margin-top: 40px; font-size: 14px; color: #555; opacity: 0.85">
       <table style="margin: 0 auto; font-family: monospace; border-spacing: 0 6px">
         <tr>
           <td style="font-weight: bold; text-align: right; padding-right: 8px">
             GMT:
           </td>
           <td class="time-cell">
-            <time id="gmtTime" datetime="">Loading...</time>
+            <time id="gmtTime" datetime="2025-01-01T00:00:00Z">Loading...</time>
           </td>
         </tr>
         <tr>
@@ -248,7 +248,7 @@
             UTC:
           </td>
           <td class="time-cell">
-            <time id="utcTime" datetime="">Loading...</time>
+            <time id="utcTime" datetime="2025-01-01T00:00:00Z">Loading...</time>
           </td>
         </tr>
         <tr>
@@ -258,7 +258,7 @@
           <td id="unixTime" style="text-align: left; font-family: monospace"></td>
         </tr>
       </table>
-    </section>
+    </div>
   </main>
 
   <script>
