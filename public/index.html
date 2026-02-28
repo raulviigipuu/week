@@ -653,15 +653,33 @@
     ];
     const SOLSTICE_TABLE_END_YEAR = 2100;
 
-    function startClock() {
-      function tick() {
-        const now = new Date();
-        updateUI(now);
-        updateSolsticeInfo(now);
-      }
-      tick();
-      setInterval(tick, 1000);
+    let clockIntervalId = null;
+
+    function tickClock() {
+      const now = new Date();
+      updateUI(now);
+      updateSolsticeInfo(now);
     }
+
+    function startClock() {
+      if (clockIntervalId !== null) return;
+      tickClock();
+      clockIntervalId = setInterval(tickClock, 1000);
+    }
+
+    function stopClock() {
+      if (clockIntervalId === null) return;
+      clearInterval(clockIntervalId);
+      clockIntervalId = null;
+    }
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) {
+        stopClock();
+      } else {
+        startClock();
+      }
+    });
 
     startClock();
   </script>
