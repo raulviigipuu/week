@@ -23,8 +23,14 @@ What this does:
 
 ## Ideas
 
-## Food for though
+## Food for thought
 
 Holiday Tracker 🇪🇪
 
 Should support Estonian public holidays using a clean and maintainable approach (e.g. static JSON, or API with caching).
+
+Sunrise / Sunset Times
+
+Add sunrise and sunset times based on user location (lat/lon or city), either via:
+- astronomy API (simpler, network-dependent), or
+- local solar calculation (offline, no API dependency).
