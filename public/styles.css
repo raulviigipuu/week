@@ -1,0 +1,130 @@
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+      padding: 0 10px;
+    }
+
+    .year,
+    .date {
+      font-weight: bold;
+      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.15);
+    }
+
+    .year {
+      font-size: 48px;
+      color: #333;
+      margin-top: 0;
+      margin-bottom: 10px;
+      text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .date {
+      font-size: 22px;
+      margin-top: 0;
+      margin-bottom: 20px;
+    }
+
+    .container-wrapper {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .container {
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      width: 220px;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .label {
+      font-size: 20px;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    .value {
+      font-size: 24px;
+      color: #007bff;
+    }
+
+    .subtext {
+      font-size: 16px;
+      color: #666;
+      margin-left: 5px;
+    }
+
+    .time-cell {
+      font-family: monospace;
+      font-weight: 500;
+      text-align: left;
+    }
+
+    .progress-bar-wrapper {
+      width: 100%;
+      height: 10px;
+      background-color: #eee;
+      border-radius: 5px;
+      margin-top: 10px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background-color: #007bff;
+      width: 0%;
+      transition: width 0.5s ease;
+    }
+
+    .timestamp-style {
+      font-size: 14px;
+      font-family: system-ui, sans-serif;
+      color: #444;
+      opacity: 0.85;
+      text-align: center;
+      margin-top: 8px;
+      line-height: 1.4;
+    }
+
+    .timestamp-style .label {
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    .timestamp-style .code {
+      font-family: monospace;
+    }
+
+    #newYearCountdownSection {
+      margin-top: 20px;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (max-width: 600px) {
+      .container-wrapper {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 300px;
+        white-space: normal;
+      }
+    }
