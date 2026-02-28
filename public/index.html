@@ -71,12 +71,14 @@
     .year {
       font-size: 48px;
       color: #333;
+      margin-top: 0;
       margin-bottom: 10px;
       text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
     }
 
     .date {
       font-size: 22px;
+      margin-top: 0;
       margin-bottom: 20px;
     }
 
@@ -110,7 +112,7 @@
 
     .subtext {
       font-size: 16px;
-      color: #bbb;
+      color: #666;
       margin-left: 5px;
     }
 
@@ -139,7 +141,7 @@
     .timestamp-style {
       font-size: 14px;
       font-family: system-ui, sans-serif;
-      color: #555;
+      color: #444;
       opacity: 0.85;
       text-align: center;
       margin-top: 8px;
@@ -159,6 +161,18 @@
       margin-top: 20px;
     }
 
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
     @media (max-width: 600px) {
       .container-wrapper {
         flex-direction: column;
@@ -176,26 +190,27 @@
 
 <body>
   <header>
-    <div class="year" id="currentYear">Loading...</div>
-    <div class="date" id="currentDate">Loading...</div>
+    <h1 class="year" id="currentYear" aria-live="polite">Loading...</h1>
+    <p class="date" id="currentDate" aria-live="polite">Loading...</p>
   </header>
 
-  <main>
+  <main aria-labelledby="dashboardHeading">
+    <h2 id="dashboardHeading" class="sr-only">Date Dashboard Metrics</h2>
     <div class="container-wrapper">
       <div class="container">
         <div class="label">Current Week Number:</div>
         <div class="value">
-          <div id="weekNumber">Loading...</div>
+          <div id="weekNumber" aria-live="polite" aria-label="Current ISO week number">Loading...</div>
           <div class="timestamp-style">
             <span class="label">ISO week:</span>
-            <span class="code" id="isoWeek">Loading...</span>
+            <span class="code" id="isoWeek" aria-live="polite">Loading...</span>
           </div>
         </div>
       </div>
       <div class="container">
         <div class="label">Day Number in Year:</div>
         <div class="value">
-          <div id="dayOfYear">Loading...</div>
+          <div id="dayOfYear" aria-live="polite">Loading...</div>
           <div class="timestamp-style">
             <span class="label">of</span>
             <span class="code" id="totalDays">365</span>
@@ -204,7 +219,7 @@
       </div>
       <div class="container">
         <div class="label">Year Progress:</div>
-        <div class="value" id="yearProgress">Loading...</div>
+        <div class="value" id="yearProgress" aria-live="polite">Loading...</div>
         <div class="progress-bar-wrapper">
           <div class="progress-bar" id="progressFill"></div>
         </div>
@@ -212,10 +227,10 @@
       <div class="container">
         <div class="label">Quarter:</div>
         <div class="value">
-          <div id="quarterMain">Q2</div>
+          <div id="quarterMain" aria-live="polite">Q2</div>
           <div class="timestamp-style">
             <span class="label">of</span>
-            <span class="code" id="quarterYear">2025</span>
+            <span class="code" id="quarterYear" aria-live="polite">2025</span>
           </div>
         </div>
       </div>
@@ -223,14 +238,14 @@
 
     <div id="newYearCountdownSection" class="timestamp-style">
       <span class="label">Countdown to New Year 🎉:</span>
-      <span class="code" id="newYearCountdown">Loading...</span>
+      <span class="code" id="newYearCountdown" role="timer" aria-live="off">Loading...</span>
     </div>
 
-    <div id="solsticeInfo" class="timestamp-style"></div>
+    <div id="solsticeInfo" class="timestamp-style" aria-live="polite"></div>
 
     <div id="moonPhaseSection" class="timestamp-style">
       <span class="label">Moon phase:</span>
-      <span class="code" id="moonPhaseText">Loading...</span>
+      <span class="code" id="moonPhaseText" aria-live="polite">Loading...</span>
     </div>
 
     <div id="loadTimeCard" style="margin-top: 40px; font-size: 14px; color: #555; opacity: 0.85">
