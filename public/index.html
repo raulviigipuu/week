@@ -4,6 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self'; script-src 'self' 'unsafe-inline' https://stats.nonzero.ee; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; connect-src 'self' https://stats.nonzero.ee; object-src 'none'; base-uri 'self'; frame-ancestors 'none'">
   <meta name="description"
     content="Today's Date Snapshot — week number, quarter, day of year, year progress, moon phase, solstice countdown, and more.">
 
@@ -411,10 +413,10 @@
     }
 
     function updateSolsticeInfo(now) {
+      const solsticeInfo = document.getElementById("solsticeInfo");
       const next = getNextSolstice(now);
       if (!next) {
-        document.getElementById("solsticeInfo").textContent =
-          `No solstice data beyond ${SOLSTICE_TABLE_END_YEAR}.`;
+        solsticeInfo.textContent = `No solstice data beyond ${SOLSTICE_TABLE_END_YEAR}.`;
         return;
       }
 
@@ -426,11 +428,21 @@
         day: "numeric",
         timeZone: DEFAULT_TIMEZONE,
       });
-      const label = `<span class="label">Next solstice ☀️:</span> <span class="code">${next.name
-        } — ${dateLabel} (${diffDays} day${diffDays !== 1 ? "s" : ""
-        } left)</span>`;
+      const daysText = `${diffDays} day${diffDays !== 1 ? "s" : ""} left`;
 
-      document.getElementById("solsticeInfo").innerHTML = label;
+      solsticeInfo.textContent = "";
+
+      const label = document.createElement("span");
+      label.className = "label";
+      label.textContent = "Next solstice ☀️:";
+
+      const value = document.createElement("span");
+      value.className = "code";
+      value.textContent = ` ${next.name} — ${dateLabel} (${daysText})`;
+
+      solsticeInfo.appendChild(label);
+      solsticeInfo.appendChild(document.createTextNode(" "));
+      solsticeInfo.appendChild(value);
     }
 
     // MAIN UPDATE
