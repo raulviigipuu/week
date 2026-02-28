@@ -263,26 +263,27 @@
 
   <script>
     // UTILS
-    function getWeekNumber(date) {
-      const firstDay = new Date(date.getFullYear(), 0, 1);
-      const pastDays = (date - firstDay + 86400000) / 86400000;
-      return Math.ceil((pastDays + firstDay.getDay() + 1) / 7);
-    }
-
-    function getISOWeekString(date) {
+    function getISOWeekParts(date) {
       const temp = new Date(
         Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())
       );
       const dayNum = temp.getUTCDay() || 7;
       temp.setUTCDate(temp.getUTCDate() + 4 - dayNum);
-      const yearStart = new Date(Date.UTC(temp.getUTCFullYear(), 0, 1));
+      const isoYear = temp.getUTCFullYear();
+      const yearStart = new Date(Date.UTC(isoYear, 0, 1));
       const weekNo = Math.ceil(((temp - yearStart) / 86400000 + 1) / 7);
-      return `${temp.getUTCFullYear()}-W${String(weekNo).padStart(2, "0")}`;
+      return { isoYear, weekNo };
+    }
+
+    function getISOWeekString(date) {
+      const { isoYear, weekNo } = getISOWeekParts(date);
+      return `${isoYear}-W${String(weekNo).padStart(2, "0")}`;
     }
 
     function getDayOfYear(date) {
-      const start = new Date(date.getFullYear(), 0, 0);
-      return Math.floor((date - start) / 86400000);
+      const utcDate = Date.UTC(date.getFullYear(), date.getMonth(), date.getDate());
+      const utcYearStart = Date.UTC(date.getFullYear(), 0, 0);
+      return Math.floor((utcDate - utcYearStart) / 86400000);
     }
 
     function isLeapYear(year) {
@@ -301,7 +302,8 @@
     function formatDateTime(date, useUTC = false) {
       const get = (fn) => String(fn.call(date)).padStart(2, "0");
       const yyyy = useUTC ? date.getUTCFullYear() : date.getFullYear();
-      const mm = get(useUTC ? date.getUTCMonth : date.getMonth) + 1;
+      const month = useUTC ? date.getUTCMonth() : date.getMonth();
+      const mm = String(month + 1).padStart(2, "0");
       const dd = get(useUTC ? date.getUTCDate : date.getDate);
       const hh = get(useUTC ? date.getUTCHours : date.getHours);
       const min = get(useUTC ? date.getUTCMinutes : date.getMinutes);
@@ -328,7 +330,7 @@
     function getNewYearCountdownString() {
       const now = new Date();
       const nextYear = now.getFullYear() + 1;
-      const newYear = new Date(`${nextYear}-01-01T00:00:00Z`);
+      const newYear = new Date(nextYear, 0, 1, 0, 0, 0, 0);
       const diffMs = newYear - now;
       if (diffMs <= 0) return "Happy New Year!";
 
@@ -392,29 +394,35 @@
     }
 
     function getNextSolstice(today) {
-      const solstices = [
-        { date: "2024-06-20", name: "Summer Solstice" },
-        { date: "2024-12-21", name: "Winter Solstice" },
-        { date: "2025-06-20", name: "Summer Solstice" },
-        { date: "2025-12-21", name: "Winter Solstice" },
-        { date: "2026-06-21", name: "Summer Solstice" },
-        { date: "2026-12-21", name: "Winter Solstice" },
-        { date: "2027-06-21", name: "Summer Solstice" },
-        { date: "2027-12-21", name: "Winter Solstice" },
-        { date: "2028-06-20", name: "Summer Solstice" },
-        { date: "2028-12-21", name: "Winter Solstice" },
-        { date: "2029-06-21", name: "Summer Solstice" },
-        { date: "2029-12-21", name: "Winter Solstice" },
-        { date: "2030-06-21", name: "Summer Solstice" },
-        { date: "2030-12-21", name: "Winter Solstice" },
-      ];
+      const knownSummerDayByYear = {
+        2024: 20,
+        2025: 20,
+        2026: 21,
+        2027: 21,
+        2028: 20,
+        2029: 21,
+        2030: 21,
+      };
+      const currentYear = today.getFullYear();
+      const solstices = [];
+
+      for (let year = currentYear - 1; year <= currentYear + 30; year += 1) {
+        const summerDay = knownSummerDayByYear[year] || 21;
+        solstices.push({
+          date: new Date(Date.UTC(year, 5, summerDay)),
+          name: "Summer Solstice",
+        });
+        solstices.push({
+          date: new Date(Date.UTC(year, 11, 21)),
+          name: "Winter Solstice",
+        });
+      }
 
       for (const s of solstices) {
-        const solsticeDate = new Date(s.date + "T00:00:00Z");
-        if (solsticeDate > today) {
+        if (s.date > today) {
           return {
             name: s.name,
-            date: solsticeDate,
+            date: s.date,
           };
         }
       }
@@ -443,7 +451,8 @@
 
       document.getElementById("currentYear").textContent = year;
       document.getElementById("currentDate").textContent = formatDate(now);
-      document.getElementById("weekNumber").textContent = getWeekNumber(now);
+      const { weekNo } = getISOWeekParts(now);
+      document.getElementById("weekNumber").textContent = weekNo;
       document.getElementById("isoWeek").textContent = getISOWeekString(now);
 
       document.getElementById("dayOfYear").textContent = getDayOfYear(now);
